@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B0B0D">
+<title>Antes de empezar · Fuerza T</title>
+<meta name="description" content="Contame en 1 minuto cómo te gustaría trabajar y seguimos por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0B0D;
+    --surface:#151519;
+    --surface-2:#1C1C22;
+    --line:#2A2A31;
+    --text:#F4F2EE;
+    --muted:#8E8E97;
+    --accent:#F2601F;
+    --accent-soft:rgba(242,96,31,.14);
+    --accent-line:rgba(242,96,31,.35);
+    --wa:#25D366;
+    --radius:16px;
+    --display:'Oswald',system-ui,sans-serif;
+    --body:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.5;
+    -webkit-font-smoothing:antialiased;min-height:100dvh;display:flex;justify-content:center;
+    padding:20px 18px calc(28px + env(safe-area-inset-bottom));
+  }
+  .app{width:100%;max-width:460px;display:flex;flex-direction:column}
+
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+  .brand svg{display:block;width:30px;height:30px;flex:none}
+  .brand span{font-family:var(--display);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:.82rem;color:var(--muted)}
+  .brand b{color:var(--text);font-weight:600}
+
+  .progress{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-bottom:26px}
+  .progress .bar{height:100%;width:0;background:var(--accent);border-radius:2px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+  .progress.hidden{visibility:hidden}
+
+  .screen{animation:enter .32s cubic-bezier(.2,.7,.3,1)}
+  @keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-family:var(--display);text-transform:uppercase;letter-spacing:.16em;font-size:.72rem;font-weight:600;color:var(--accent);margin-bottom:14px}
+  h1{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:1.9rem;line-height:1.06;margin-bottom:14px}
+  h1 em{color:var(--accent);font-style:normal}
+  .lead{color:var(--muted);font-size:1rem;margin-bottom:26px;max-width:38ch}
+
+  .back{background:none;border:none;color:var(--muted);font-family:var(--body);font-size:.92rem;cursor:pointer;padding:8px 0;margin-bottom:14px;display:inline-flex;align-items:center;gap:6px}
+  .back:hover{color:var(--text)}
+  .back:disabled{opacity:0;pointer-events:none}
+
+  input[type=text]{
+    width:100%;font-family:var(--body);font-size:1.1rem;color:var(--text);
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin-bottom:18px;transition:border-color .18s;
+  }
+  input[type=text]::placeholder{color:#5c5c63}
+  input[type=text]:focus{outline:none;border-color:var(--accent-line)}
+
+  .btn{
+    display:block;width:100%;font-family:var(--body);font-size:1rem;font-weight:600;color:var(--text);
+    text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:17px 18px;cursor:pointer;transition:border-color .18s,background .18s,transform .08s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:hover{border-color:var(--accent-line);background:var(--surface-2)}
+  .btn:active{transform:scale(.985)}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .btn:disabled{opacity:.4;pointer-events:none}
+
+  .btn-primary{text-align:center;background:var(--accent);border-color:var(--accent);color:#120A05;font-weight:700}
+  .btn-primary:hover{background:#ff6d2c;border-color:#ff6d2c}
+
+  .cards{display:flex;flex-direction:column;gap:12px}
+  .card{line-height:1.4}
+  .card .ct{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.95rem;margin-bottom:5px;color:var(--text)}
+  .card .cd{font-size:.92rem;color:var(--muted);font-weight:400}
+
+  .commit{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin-bottom:16px;
+  }
+  .commit li{list-style:none;padding:9px 0;font-size:.96rem;display:flex;gap:11px;align-items:flex-start;border-bottom:1px solid var(--line)}
+  .commit li:last-child{border-bottom:none;padding-bottom:2px}
+  .commit li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;margin-top:8px}
+  .note{background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:12px;padding:13px 15px;font-size:.9rem;color:var(--text);margin-bottom:22px;line-height:1.45}
+
+  .qtext{font-family:var(--display);font-weight:500;font-size:1.35rem;line-height:1.2;margin-bottom:22px}
+  .choices{display:flex;flex-direction:column;gap:11px}
+
+  /* Final */
+  .final h1{margin-bottom:18px}
+  .final .msg{font-size:1.08rem;color:var(--text);margin-bottom:8px;line-height:1.5}
+  .final .msg .em{color:var(--accent)}
+  .final p.sub{color:var(--muted);font-size:1rem;margin-bottom:28px;line-height:1.5}
+  .btn-wa{
+    text-align:center;background:var(--wa);border-color:var(--wa);color:#06301A;font-weight:700;
+    display:flex;align-items:center;justify-content:center;gap:10px;font-size:1.05rem;
+  }
+  .btn-wa:hover{background:#2ee071;border-color:#2ee071}
+  .btn-wa svg{width:20px;height:20px;flex:none}
+  .restart{background:none;border:none;color:var(--muted);font-size:.9rem;cursor:pointer;padding:14px;width:100%;margin-top:6px}
+  .restart:hover{color:var(--text)}
+
+  .hint{color:var(--muted);font-size:.82rem;text-align:center;margin-top:16px}
+
+  @media (prefers-reduced-motion:reduce){
+    .screen{animation:none}.progress .bar{transition:none}.btn{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="brand" aria-label="Fuerza T">
+    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <path d="M6 8 L34 8 L20 34 Z" stroke="#F2601F" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M11 15 L29 15" stroke="#F4F2EE" stroke-width="2" stroke-linecap="round"/>
+      <path d="M20 16 L20 26 M16 16 L24 16" stroke="#F2601F" stroke-width="2.4" stroke-linecap="round"/>
+    </svg>
+    <span><b>FUERZA&nbsp;T</b></span>
+  </div>
+
+  <div class="progress hidden" id="progress"><div class="bar" id="bar"></div></div>
+
+  <div id="root"></div>
+
+</div>
+
+<script>
+/* ====== CONFIG ====== */
+/* Tu WhatsApp en formato internacional, solo dígitos.
+   Argentina celular = 549 + código de área + número.
+   Si el chat no abre, probá sin el 9: "542604040936". */
+const WHATSAPP = "5492604040936";
+
+/* ====== Estado (solo en memoria) ====== */
+let name = "";
+let level = null;      // 'A' | 'B' | 'C'
+let suParte = null;    // true | false
+let step = 0;          // 0 nombre · 1 nivel · 2 su parte · 3 final
+
+const root = document.getElementById('root');
+const progress = document.getElementById('progress');
+const bar = document.getElementById('bar');
+
+/* Total de pasos visibles depende de la rama (A salta "su parte") */
+function totalSteps(){ return level==='A' ? 2 : 3; } // nombre + nivel (+ su parte)
+function progressIndex(){
+  if(step===0) return 0;
+  if(step===1) return 1;
+  if(step===2) return 2;
+  return totalSteps(); // final = lleno
+}
+function setProgress(){
+  if(step>=3){ progress.classList.add('hidden'); return; }
+  progress.classList.remove('hidden');
+  bar.style.width = (progressIndex()/totalSteps()*100)+'%';
+}
+
+/* ====== Pantalla 1 — Nombre ====== */
+function renderName(){
+  setProgress();
+  root.innerHTML = `
+    <section class="screen">
+      <div class="eyebrow">Antes de empezar</div>
+      <h1>Contame cómo te<br>gustaría <em>trabajar</em></h1>
+      <p class="lead">Unas preguntas rápidas para entender qué forma de trabajar puede servirte más. Menos de un minuto.</p>
+      <input type="text" id="name" placeholder="Tu nombre" autocomplete="given-name" value="${escapeAttr(name)}">
+      <button class="btn btn-primary" id="next" ${name.trim()?'':'disabled'}>Continuar</button>
+      <p class="hint">No pedimos email ni teléfono. Seguís por WhatsApp cuando quieras.</p>
+    </section>`;
+  const input = document.getElementById('name');
+  const next = document.getElementById('next');
+  input.oninput = ()=>{ name=input.value; next.disabled = !name.trim(); };
+  input.onkeydown = (e)=>{ if(e.key==='Enter' && name.trim()){ step=1; render(); } };
+  next.onclick = ()=>{ if(name.trim()){ step=1; render(); } };
+  setTimeout(()=>input.focus(),120);
+}
+
+/* ====== Pantalla 2 — Nivel de intervención ====== */
+function renderLevel(){
+  setProgress();
+  const opts = [
+    {k:'A', t:"Seguir por mi cuenta", d:"Tener una planificación para seguir de forma independiente y consultar alguna duda puntual si aparece."},
+    {k:'B', t:"Que sigas mi progreso", d:"Planificación personalizada y que además vayas siguiendo cómo avanzo, ajustando a partir de mis registros y videos."},
+    {k:'C', t:"Que estés en los entrenamientos", d:"Además del seguimiento y los ajustes, que estés conmigo durante los entrenamientos para enseñarme y corregirme en el momento."}
+  ];
+  const cards = opts.map(o=>`
+    <button class="btn card" data-k="${o.k}">
+      <div class="ct">${o.t}</div>
+      <div class="cd">${o.d}</div>
+    </button>`).join('');
+  root.innerHTML = `
+    <section class="screen">
+      <button class="back" id="back">← Anterior</button>
+      <div class="qtext">¿Cuál de estas formas de trabajar sentís que te serviría más hoy?</div>
+      <div class="cards">${cards}</div>
+    </section>`;
+  root.querySelectorAll('.card').forEach(b=>{
+    b.onclick = ()=>{
+      level = b.dataset.k;
+      suParte = null;
+      if(level==='A'){ step=3; render(); }
+      else { step=2; render(); }
+    };
+  });
+  document.getElementById('back').onclick = ()=>{ step=0; render(); };
+}
+
+/* ====== Pantalla 3 — Su parte (B o C) ====== */
+function renderSuParte(){
+  setProgress();
+  const items = (level==='C')
+    ? ["Medirte peso y cintura en ayunas.",
+       "Registrar en la app los kilos y repeticiones de tus entrenamientos.",
+       "Completar el reporte semanal de cumplimiento."]
+    : ["Medirte peso y cintura en ayunas.",
+       "Registrar en la app los kilos y repeticiones de tus entrenamientos.",
+       "Grabarte en algunos ejercicios para poder revisar cómo los estás haciendo.",
+       "Completar el reporte semanal de cumplimiento."];
+  const li = items.map(t=>`<li>${t}</li>`).join('');
+  root.innerHTML = `
+    <section class="screen">
+      <button class="back" id="back">← Anterior</button>
+      <div class="eyebrow">Para que el seguimiento funcione</div>
+      <div class="qtext" style="font-size:1.15rem;margin-bottom:16px">Para poder seguir tu progreso y hacer los ajustes, necesito saber si podés comprometerte semana a semana con esto:</div>
+      <ul class="commit">${li}</ul>
+      <div class="note">No hace falta que ya sepas usar la app ni hacer todo esto: yo te enseño. Lo importante ahora es saber si podés comprometerte a cumplirlo.</div>
+      <div class="qtext" style="font-size:1.15rem;margin-bottom:16px">¿Podés comprometerte con esto semana a semana?</div>
+      <div class="choices">
+        <button class="btn" data-c="1">Sí, puedo comprometerme.</button>
+        <button class="btn" data-c="0">No, prefiero una modalidad sin ese seguimiento.</button>
+      </div>
+    </section>`;
+  root.querySelectorAll('[data-c]').forEach(b=>{
+    b.onclick = ()=>{ suParte = b.dataset.c==='1'; step=3; render(); };
+  });
+  document.getElementById('back').onclick = ()=>{ step=1; render(); };
+}
+
+/* ====== Mensaje de WhatsApp según caso ====== */
+function buildMessage(){
+  const n = name.trim();
+  if(level==='A'){
+    return `Hola Tirso, soy ${n}. Completé las preguntas de Fuerza T.\n\nElegí trabajar con una planificación que pueda seguir de forma independiente y consultar dudas puntuales cuando aparezcan.\n\n¿Cómo seguimos?`;
+  }
+  if(level==='B' && suParte){
+    return `Hola Tirso, soy ${n}. Completé las preguntas de Fuerza T.\n\nElegí trabajar con planificación personalizada, seguimiento, ajustes y correcciones a partir de mis registros y videos.\n\nTambién confirmé que puedo comprometerme con las mediciones, registros, videos y reporte semanal.\n\n¿Cómo seguimos?`;
+  }
+  if(level==='C' && suParte){
+    return `Hola Tirso, soy ${n}. Completé las preguntas de Fuerza T.\n\nElegí trabajar con planificación y seguimiento, y además con tu presencia durante los entrenamientos para aprender y recibir correcciones en el momento.\n\nTambién confirmé que puedo comprometerme con las mediciones, registros y reporte semanal.\n\n¿Cómo seguimos?`;
+  }
+  // B o C + NO acepta su parte (Opción 2: salida natural a Básico)
+  return `Hola Tirso, soy ${n}. Completé las preguntas de Fuerza T.\n\nMe interesa mejorar mi entrenamiento, pero por ahora prefiero una planificación que pueda seguir por mi cuenta, sin el compromiso del seguimiento semana a semana.\n\n¿Cómo seguimos?`;
+}
+
+/* ====== Pantalla final ====== */
+function renderFinal(){
+  progress.classList.add('hidden');
+  const n = escapeHtml(name.trim());
+  const declino = (level!=='A' && suParte===false);
+
+  let headline, sub;
+  if(declino){
+    headline = `Listo, ${n} 🙌`;
+    sub = "Por lo que me contás, quizás te sirva más una planificación que puedas seguir por tu cuenta, sin el compromiso del seguimiento semana a semana. Escribime y lo vemos juntos.";
+  } else {
+    headline = `Listo, ${n} 🙌`;
+    sub = "Ya tengo una idea mucho más clara de cómo te gustaría trabajar. Mandame tus respuestas por WhatsApp y seguimos desde ahí.";
+  }
+
+  const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(buildMessage())}`;
+
+  root.innerHTML = `
+    <section class="screen final">
+      <div class="eyebrow">Todo listo</div>
+      <h1 class="msg">${headline}</h1>
+      <p class="sub">${sub}</p>
+      <a class="btn btn-wa" href="${url}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.2-.6.2-.2.3-.7.9-.8 1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.6-1.5-.9-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3 4.8 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.4 15 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg>
+        Continuar por WhatsApp
+      </a>
+      <button class="restart" id="restart">Volver a empezar</button>
+    </section>`;
+
+  document.getElementById('restart').onclick = ()=>{
+    name=""; level=null; suParte=null; step=0; render();
+  };
+  window.scrollTo({top:0,behavior:'auto'});
+}
+
+/* ====== Utils ====== */
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function escapeAttr(s){return escapeHtml(s);}
+
+/* ====== Router ====== */
+function render(){
+  if(step===0) renderName();
+  else if(step===1) renderLevel();
+  else if(step===2) renderSuParte();
+  else renderFinal();
+}
+render();
+</script>
+</body>
+</html>
