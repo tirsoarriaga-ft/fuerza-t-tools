@@ -189,7 +189,7 @@ function renderLevel(){
   setProgress();
   const opts = [
     {k:'A', t:"Seguir por mi cuenta", d:"Tener una planificación para seguir de forma independiente y consultar alguna duda puntual si aparece."},
-    {k:'B', t:"Que sigas mi progreso", d:"Planificación personalizada y que además vayas siguiendo cómo avanzo, ajustando a partir de mis registros y videos."},
+    {k:'B', t:"Que sigas mi progreso", d:"Planificación personalizada y seguimiento: revisás mis registros y videos para ajustarme y corregir mi técnica, aunque entrene por mi cuenta."},
     {k:'C', t:"Que estés en los entrenamientos", d:"Además del seguimiento y los ajustes, que estés conmigo durante los entrenamientos para enseñarme y corregirme en el momento."}
   ];
   const cards = opts.map(o=>`
@@ -219,12 +219,10 @@ function renderSuParte(){
   setProgress();
   const items = (level==='C')
     ? ["Medirte peso y cintura en ayunas.",
-       "Registrar en la app los kilos y repeticiones de tus entrenamientos.",
-       "Completar el reporte semanal de cumplimiento."]
+       "Registrar en la app los kilos y repeticiones de tus entrenamientos."]
     : ["Medirte peso y cintura en ayunas.",
        "Registrar en la app los kilos y repeticiones de tus entrenamientos.",
-       "Grabarte en algunos ejercicios para poder revisar cómo los estás haciendo.",
-       "Completar el reporte semanal de cumplimiento."];
+       "Grabarte en algunos ejercicios para que pueda ver tu técnica y corregirte, aunque no esté presente."];
   const li = items.map(t=>`<li>${t}</li>`).join('');
   root.innerHTML = `
     <section class="screen">
@@ -232,7 +230,7 @@ function renderSuParte(){
       <div class="eyebrow">Para que el seguimiento funcione</div>
       <div class="qtext" style="font-size:1.15rem;margin-bottom:16px">Para poder seguir tu progreso y hacer los ajustes, necesito saber si podés comprometerte semana a semana con esto:</div>
       <ul class="commit">${li}</ul>
-      <div class="note">No hace falta que ya sepas usar la app ni hacer todo esto: yo te enseño. Lo importante ahora es saber si podés comprometerte a cumplirlo.</div>
+      <div class="note">Sí vas a tener que aprender a hacer varias de estas cosas, pero eso lo construimos de a poco y juntos. Lo único que necesito hoy es tu compromiso a empezar a registrar. Si al principio te sale mal, lo corregimos en el camino.</div>
       <div class="qtext" style="font-size:1.15rem;margin-bottom:16px">¿Podés comprometerte con esto semana a semana?</div>
       <div class="choices">
         <button class="btn" data-c="1">Sí, puedo comprometerme.</button>
@@ -252,10 +250,10 @@ function buildMessage(){
     return `Hola Tirso, soy ${n}. Completé las preguntas de Fuerza T.\n\nElegí trabajar con una planificación que pueda seguir de forma independiente y consultar dudas puntuales cuando aparezcan.\n\n¿Cómo seguimos?`;
   }
   if(level==='B' && suParte){
-    return `Hola Tirso, soy ${n}. Completé las preguntas de Fuerza T.\n\nElegí trabajar con planificación personalizada, seguimiento, ajustes y correcciones a partir de mis registros y videos.\n\nTambién confirmé que puedo comprometerme con las mediciones, registros, videos y reporte semanal.\n\n¿Cómo seguimos?`;
+    return `Hola Tirso, soy ${n}. Completé las preguntas de Fuerza T.\n\nElegí trabajar con planificación personalizada, seguimiento, ajustes y correcciones de técnica a partir de mis registros y videos.\n\nTambién confirmé que puedo comprometerme con las mediciones, los registros y grabarme para que corrijas mi técnica.\n\n¿Cómo seguimos?`;
   }
   if(level==='C' && suParte){
-    return `Hola Tirso, soy ${n}. Completé las preguntas de Fuerza T.\n\nElegí trabajar con planificación y seguimiento, y además con tu presencia durante los entrenamientos para aprender y recibir correcciones en el momento.\n\nTambién confirmé que puedo comprometerme con las mediciones, registros y reporte semanal.\n\n¿Cómo seguimos?`;
+    return `Hola Tirso, soy ${n}. Completé las preguntas de Fuerza T.\n\nElegí trabajar con planificación y seguimiento, y además con tu presencia durante los entrenamientos para aprender y recibir correcciones en el momento.\n\nTambién confirmé que puedo comprometerme con las mediciones y los registros.\n\n¿Cómo seguimos?`;
   }
   // B o C + NO acepta su parte (Opción 2: salida natural a Básico)
   return `Hola Tirso, soy ${n}. Completé las preguntas de Fuerza T.\n\nMe interesa mejorar mi entrenamiento, pero por ahora prefiero una planificación que pueda seguir por mi cuenta, sin el compromiso del seguimiento semana a semana.\n\n¿Cómo seguimos?`;
