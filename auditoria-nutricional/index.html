@@ -1,0 +1,3117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111827" />
+
+  <title>Auditoría Nutricional | Fuerza T</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --dark: #111827;
+      --dark-soft: #1f2937;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
+      --danger: #b91c1c;
+      --danger-soft: #fef2f2;
+      --success: #047857;
+      --success-soft: #ecfdf5;
+      --warning: #92400e;
+      --warning-soft: #fffbeb;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: var(--bg);
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 16px 18px 12px;
+      background: rgba(243, 244, 246, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-name {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+
+    .block-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .progress-track {
+      height: 7px;
+      margin-top: 12px;
+      border-radius: 999px;
+      background: #d1d5db;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: var(--dark);
+      transition: width 0.25s ease;
+    }
+
+    .content {
+      padding: 22px 16px 40px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    }
+
+    .title {
+      margin: 0 0 10px;
+      font-size: 25px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .highlight {
+      margin-top: 18px;
+      padding: 14px 15px;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      color: #1e3a8a;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .question {
+      margin-bottom: 28px;
+    }
+
+    .question:last-child {
+      margin-bottom: 0;
+    }
+
+    .question-number {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .question-title {
+      margin: 0 0 13px;
+      font-size: 17px;
+      line-height: 1.4;
+      font-weight: 750;
+    }
+
+    .hint {
+      margin: -5px 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .options {
+      display: grid;
+      gap: 9px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: white;
+      cursor: pointer;
+      transition:
+        border-color 0.15s,
+        background 0.15s,
+        transform 0.05s;
+    }
+
+    .option:active {
+      transform: scale(0.99);
+    }
+
+    .option.selected {
+      border-color: var(--dark);
+      background: #f9fafb;
+    }
+
+    .option input {
+      margin-top: 3px;
+      accent-color: var(--dark);
+    }
+
+    .option-text {
+      line-height: 1.4;
+      font-size: 14px;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .day-btn {
+      padding: 12px 5px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: white;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .day-btn.selected {
+      background: var(--dark);
+      color: white;
+      border-color: var(--dark);
+    }
+
+    textarea,
+    .text-input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    textarea:focus,
+    .text-input:focus {
+      border-color: var(--dark);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      min-height: 48px;
+      padding: 12px 17px;
+      border: none;
+      border-radius: 13px;
+      font-weight: 800;
+    }
+
+    .btn-primary {
+      flex: 1;
+      background: var(--dark);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .error {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--danger-soft);
+      color: var(--danger);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .success {
+      padding: 16px;
+      border-radius: 14px;
+      background: var(--success-soft);
+      color: var(--success);
+      line-height: 1.5;
+    }
+
+    .warning {
+      padding: 16px;
+      border-radius: 14px;
+      background: var(--warning-soft);
+      color: var(--warning);
+      line-height: 1.5;
+    }
+
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      padding: 30px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid #d1d5db;
+      border-top-color: var(--dark);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .identity {
+      margin-top: 18px;
+    }
+
+    .identity label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .intro-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    .intro-item {
+      padding: 11px 13px;
+      background: #f9fafb;
+      border-radius: 11px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .final-pair {
+      display: grid;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .final-pair > div {
+      padding: 14px;
+      background: #f9fafb;
+      border-radius: 12px;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (min-width: 560px) {
+      .content {
+        padding-top: 30px;
+      }
+
+      .card {
+        padding: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="header" id="header">
+    <div class="brand">
+      <div class="brand-name">FUERZA T</div>
+      <div class="block-label" id="blockLabel">
+        Auditoría nutricional
+      </div>
+    </div>
+
+    <div class="progress-track">
+      <div
+        class="progress-bar"
+        id="progressBar"
+      ></div>
+    </div>
+  </header>
+
+  <main class="content">
+    <div id="root"></div>
+  </main>
+
+</div>
+
+
+<script>
+
+  // ==========================================================
+  // CONFIGURACIÓN
+  // ==========================================================
+
+  const SCRIPT_URL =
+    'PEGAR_ACA_LA_URL_EXEC_DEL_APPS_SCRIPT';
+
+
+  // ==========================================================
+  // ESTADO
+  // ==========================================================
+
+  const state = {
+
+    screen: 'login',
+
+    asesorado: '',
+    asesoradoId: '',
+    nutriConfirmado: '',
+
+    asesorados: [],
+    diagnosticos: [],
+
+    currentStep: 0,
+
+    answers: {}
+  };
+
+
+  // ==========================================================
+  // UTILIDADES
+  // ==========================================================
+
+  function norm(x) {
+    return String(x || '')
+      .trim()
+      .toLowerCase();
+  }
+
+
+  function escapeHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+
+  async function getJSON(url) {
+
+    const response =
+      await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(
+        'No se pudo conectar con Fuerza T.'
+      );
+    }
+
+    return response.json();
+  }
+
+
+  async function postJSON(payload) {
+
+    const response =
+      await fetch(
+        SCRIPT_URL,
+        {
+          method: 'POST',
+
+          headers: {
+            'Content-Type':
+              'text/plain;charset=utf-8'
+          },
+
+          body:
+            JSON.stringify(payload)
+        }
+      );
+
+    if (!response.ok) {
+      throw new Error(
+        'No se pudo enviar la auditoría.'
+      );
+    }
+
+    return response.json();
+  }
+
+
+  function setProgress(percent) {
+
+    document
+      .getElementById('progressBar')
+      .style.width =
+        percent + '%';
+  }
+
+
+  function setBlock(text) {
+
+    document
+      .getElementById('blockLabel')
+      .textContent =
+        text;
+  }
+
+
+  // ==========================================================
+  // PREGUNTAS
+  // ==========================================================
+
+  const steps = [
+
+    // ========================================================
+    // BLOQUE 1
+    // ========================================================
+
+    {
+      block:
+        '1 · Punto de partida',
+
+      questions: [
+
+        {
+          key: 'antiguedad',
+
+          title:
+            '¿Hace cuánto estás trabajando con el asesoramiento de Fuerza T?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'menos_2_sem',
+              label: 'Menos de 2 semanas'
+            },
+            {
+              value: '2_4_sem',
+              label: '2–4 semanas'
+            },
+            {
+              value: '1_2_meses',
+              label: '1–2 meses'
+            },
+            {
+              value: 'mas_2_meses',
+              label: 'Más de 2 meses'
+            }
+          ]
+        },
+
+        {
+          key: 'claridad',
+
+          title:
+            'Pensando en las indicaciones que ves en Dieta dentro de la app, ¿qué tan claro tenés qué se espera que hagas con tu alimentación?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'claro',
+              label: 'Lo tengo claro'
+            },
+            {
+              value: 'algunas_dudas',
+              label: 'Tengo algunas dudas'
+            },
+            {
+              value: 'no_claro',
+              label: 'No tengo claro qué debería hacer'
+            }
+          ]
+        },
+
+        {
+          key: 'autonomia',
+
+          title:
+            'Si mañana tuvieras que cumplir tu pauta nutricional sin volver a mirar la app, ¿podrías hacerlo?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'autonomo',
+              label:
+                'Sí, sé qué elegir y cuánto aproximadamente'
+            },
+            {
+              value: 'duda_cantidades',
+              label:
+                'Sabría cómo armar las comidas, pero dudaría con las cantidades'
+            },
+            {
+              value: 'necesita_app',
+              label:
+                'Tengo una idea general, pero necesitaría mirar la app'
+            },
+            {
+              value: 'no_sabria',
+              label:
+                'No sabría bien qué tendría que hacer'
+            }
+          ]
+        }
+      ]
+    },
+
+
+    // ========================================================
+    // BLOQUE 2
+    // ========================================================
+
+    {
+      block:
+        '2 · Qué entendés',
+
+      questions: [
+
+        {
+          key: 'pruebaEstructura',
+
+          title:
+            'Imaginá que vas a almorzar pollo + arroz + tomate. Según la estructura que usamos, ¿qué opción describe mejor esa comida?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'completa',
+              label: 'Está completa'
+            },
+            {
+              value: 'falta_grasa',
+              label:
+                'Le falta una fuente de grasa'
+            },
+            {
+              value: 'falta_proteina',
+              label:
+                'Le falta una fuente de proteína'
+            },
+            {
+              value: 'falta_hidrato',
+              label:
+                'Le falta una fuente de hidratos'
+            },
+            {
+              value: 'no_seguro',
+              label: 'No estoy seguro/a'
+            }
+          ]
+        },
+
+        {
+          key: 'flexibilidad',
+
+          title:
+            'Si un día comés alimentos distintos a los ejemplos de la app, pero mantenés correctamente la estructura y las cantidades que te corresponden...',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'cumplio',
+              label:
+                'Considero que cumplí la pauta'
+            },
+            {
+              value: 'parcial',
+              label:
+                'Considero que cumplí parcialmente'
+            },
+            {
+              value: 'no_cumplio',
+              label:
+                'Considero que no cumplí porque cambié los alimentos'
+            },
+            {
+              value: 'no_seguro',
+              label: 'No estoy seguro/a'
+            }
+          ]
+        },
+
+        {
+          key: 'comprensionEstado',
+
+          title: function() {
+
+            if (
+              state.nutriConfirmado ===
+              'deficitario'
+            ) {
+              return 'Pensando en tu pauta actual, ¿qué es lo principal que deberías intentar lograr?';
+            }
+
+            if (
+              state.nutriConfirmado ===
+              'adecuado'
+            ) {
+              return 'Si tus platos están completos pero durante la semana a veces comés más y otras menos de las cantidades pautadas, ¿cómo lo interpretarías?';
+            }
+
+            return 'En tu etapa actual, si elegís alimentos correctos pero habitualmente comés menos cantidad de la pautada...';
+          },
+
+          type: 'single',
+
+          options: function() {
+
+            if (
+              state.nutriConfirmado ===
+              'deficitario'
+            ) {
+              return [
+                {
+                  value:
+                    'comidas_completas',
+
+                  label:
+                    'Lograr comidas completas de forma consistente'
+                },
+                {
+                  value:
+                    'pesar_todo',
+
+                  label:
+                    'Pesar y medir exactamente todo lo que como'
+                },
+                {
+                  value:
+                    'comer_menos',
+
+                  label:
+                    'Comer la menor cantidad posible'
+                },
+                {
+                  value:
+                    'evitar_hg',
+
+                  label:
+                    'Evitar hidratos y grasas'
+                },
+                {
+                  value:
+                    'no_seguro',
+
+                  label:
+                    'No estoy seguro/a'
+                }
+              ];
+            }
+
+            if (
+              state.nutriConfirmado ===
+              'adecuado'
+            ) {
+              return [
+                {
+                  value:
+                    'estructura_si_cantidad_no',
+
+                  label:
+                    'La estructura estuvo bien, pero las cantidades no'
+                },
+                {
+                  value:
+                    'cumplio_completo',
+
+                  label:
+                    'Cumplí completamente porque los alimentos fueron correctos'
+                },
+                {
+                  value:
+                    'no_cumplio_nada',
+
+                  label:
+                    'No cumplí nada'
+                },
+                {
+                  value:
+                    'depende_peso',
+
+                  label:
+                    'Depende solamente de si aumenté o bajé de peso'
+                },
+                {
+                  value:
+                    'no_seguro',
+
+                  label:
+                    'No estoy seguro/a'
+                }
+              ];
+            }
+
+            return [
+              {
+                value:
+                  'no_cubre_pauta',
+
+                label:
+                  'No estoy cubriendo completamente la pauta'
+              },
+              {
+                value:
+                  'cumple_alimentos',
+
+                label:
+                  'Estoy cumpliendo porque elegí bien los alimentos'
+              },
+              {
+                value:
+                  'menos_mejor',
+
+                label:
+                  'Es mejor porque comer menos siempre ayuda'
+              },
+              {
+                value:
+                  'solo_entreno',
+
+                label:
+                  'Solo importa los días que entreno'
+              },
+              {
+                value:
+                  'no_seguro',
+
+                label:
+                  'No estoy seguro/a'
+              }
+            ];
+          }
+        }
+      ]
+    },
+
+
+    {
+      block:
+        '2 · Qué entendés',
+
+      questions: [
+
+        {
+          key: 'dudaPauta',
+
+          title:
+            '¿Hay algo de tu pauta nutricional actual que genuinamente no entiendas?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'sin_dudas',
+              label:
+                'No, siento que entiendo qué tengo que hacer'
+            },
+            {
+              value: 'armar_comidas',
+              label:
+                'Sí, tengo dudas sobre cómo armar las comidas'
+            },
+            {
+              value: 'cantidades',
+              label:
+                'Sí, tengo dudas sobre cantidades/porciones'
+            },
+            {
+              value: 'reemplazos',
+              label:
+                'Sí, tengo dudas sobre reemplazos'
+            },
+            {
+              value: 'prioridades',
+              label:
+                'Sí, tengo dudas sobre qué debería priorizar'
+            },
+            {
+              value: 'otra',
+              label: 'Tengo otra duda'
+            }
+          ]
+        },
+
+        {
+          key: 'dudaPautaOtra',
+
+          title:
+            '¿Cuál es esa duda?',
+
+          type: 'text',
+
+          required: function() {
+            return (
+              state.answers.dudaPauta ===
+              'otra'
+            );
+          },
+
+          visible: function() {
+            return (
+              state.answers.dudaPauta ===
+              'otra'
+            );
+          }
+        }
+      ]
+    },
+
+
+    // ========================================================
+    // BLOQUE 3
+    // ========================================================
+
+    {
+      block:
+        '3 · Lo que realmente pasó',
+
+      intro:
+        'Ahora no importa lo que deberías hacer. Pensá solamente en lo que realmente pasó durante los últimos 7 días.',
+
+      questions: [
+
+        {
+          key: 'comidaProblematica',
+
+          title:
+            '¿Qué comida es la que más frecuentemente se te desordena, salteás o termina siendo muy distinta de lo pautado?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'desayuno',
+              label: 'Desayuno'
+            },
+            {
+              value: 'almuerzo',
+              label: 'Almuerzo'
+            },
+            {
+              value: 'merienda',
+              label: 'Merienda'
+            },
+            {
+              value: 'cena',
+              label: 'Cena'
+            },
+            {
+              value: 'ninguna',
+              label:
+                'No hay una en particular'
+            },
+            {
+              value: 'varia',
+              label:
+                'Varía según el día'
+            }
+          ]
+        },
+
+        {
+          key: 'finDeSemana',
+
+          title:
+            'Pensando en esos 7 días, ¿qué pasó con el fin de semana comparado con el resto?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'similar',
+              label:
+                'Comí de manera bastante similar'
+            },
+            {
+              value: 'flexible',
+              label:
+                'Mantuve bastante la pauta, pero con más flexibilidad'
+            },
+            {
+              value: 'costo_mas',
+              label:
+                'Me costó bastante más cumplir'
+            },
+            {
+              value: 'abandono',
+              label:
+                'Prácticamente dejé de seguir la pauta'
+            }
+          ]
+        }
+      ]
+    },
+
+
+    {
+      block:
+        '3 · Lo que realmente pasó',
+
+      questions: [
+
+        {
+          key: 'complianceDias',
+
+          title: function() {
+
+            if (
+              state.nutriConfirmado ===
+              'deficitario'
+            ) {
+              return 'En los últimos 7 días, ¿cuántos días dirías que tus 4 comidas tuvieron la estructura completa que ves en Dieta?';
+            }
+
+            if (
+              state.nutriConfirmado ===
+              'adecuado'
+            ) {
+              return 'En los últimos 7 días, ¿cuántos días mantuviste la estructura completa de tus comidas?';
+            }
+
+            return 'En los últimos 7 días, ¿cuántos días cubriste aproximadamente las cantidades indicadas en tu pauta?';
+          },
+
+          hint: function() {
+
+            if (
+              state.nutriConfirmado ===
+              'deficitario'
+            ) {
+              return 'Proteína + hidrato + grasa + fruta/verdura.';
+            }
+
+            return '';
+          },
+
+          type: 'days'
+        },
+
+        {
+          key: 'cantidadAdecuado',
+
+          title:
+            'En esos mismos 7 días, tus cantidades fueron generalmente...',
+
+          type: 'single',
+
+          visible: function() {
+            return (
+              state.nutriConfirmado ===
+              'adecuado'
+            );
+          },
+
+          options: [
+            {
+              value: 'menores',
+              label:
+                'Menores a las pautadas'
+            },
+            {
+              value: 'parecidas',
+              label:
+                'Parecidas a las pautadas'
+            },
+            {
+              value: 'mayores',
+              label:
+                'Mayores a las pautadas'
+            },
+            {
+              value: 'variables',
+              label:
+                'Variaron demasiado como para elegir una opción'
+            }
+          ]
+        },
+
+        {
+          key: 'desvioDeportivo',
+
+          title:
+            'Cuando no llegaste a las cantidades, generalmente fue porque comiste...',
+
+          type: 'single',
+
+          visible: function() {
+            return (
+              state.nutriConfirmado ===
+                'deportivo' &&
+              Number(
+                state.answers.complianceDias
+              ) < 7
+            );
+          },
+
+          options: [
+            {
+              value: 'menos',
+              label:
+                'Menos de lo pautado'
+            },
+            {
+              value: 'mas',
+              label:
+                'Más de lo pautado'
+            },
+            {
+              value: 'variable',
+              label:
+                'Algunos días menos y otros más'
+            },
+            {
+              value: 'no_se',
+              label:
+                'No sabría decirlo'
+            }
+          ]
+        }
+      ]
+    },
+
+
+    {
+      block:
+        '3 · Lo que realmente pasó',
+
+      questions: [
+
+        {
+          key: 'similitudReal',
+
+          title:
+            'Mirando toda la semana, ¿qué tan parecida fue tu alimentación real a lo que entendés que deberías hacer?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'muy_parecida',
+              label: 'Muy parecida'
+            },
+            {
+              value: 'bastante_parecida',
+              label: 'Bastante parecida'
+            },
+            {
+              value: 'poco_parecida',
+              label: 'Poco parecida'
+            },
+            {
+              value: 'muy_distinta',
+              label: 'Muy distinta'
+            }
+          ]
+        }
+      ]
+    },
+
+
+    // ========================================================
+    // BLOQUE 4
+    // ========================================================
+
+    {
+      block:
+        '4 · Qué lo dificulta',
+
+      intro:
+        'No cumplir algunos días no es el problema de esta auditoría. Lo importante es entender qué hace que pase.',
+
+      questions: [
+
+        {
+          key: 'causas',
+
+          title:
+            'Cuando alguna vez no lográs hacer lo pautado, aunque no haya ocurrido esta semana, ¿cuáles suelen ser las principales razones?',
+
+          hint:
+            'Elegí hasta 2.',
+
+          type: 'multi',
+
+          max: 2,
+
+          options: [
+            {
+              value: 'organizacion',
+              label:
+                'No me organicé o preparé con tiempo'
+            },
+            {
+              value: 'horarios',
+              label:
+                'Mis horarios o rutina me lo dificultaron'
+            },
+            {
+              value: 'social',
+              label:
+                'Comí fuera o tuve eventos/comidas sociales'
+            },
+            {
+              value: 'hambre_saciedad',
+              label:
+                'El hambre o la saciedad me dificultaron comer lo pautado'
+            },
+            {
+              value: 'no_sabia',
+              label:
+                'No tenía claro qué elegir o cuánto comer'
+            },
+            {
+              value: 'decision',
+              label:
+                'Sabía qué hacer, pero elegí no seguirlo'
+            },
+            {
+              value: 'pauta_dificil',
+              label:
+                'La pauta me resultó difícil de adaptar a mi realidad'
+            }
+          ]
+        },
+
+        {
+          key: 'retorno',
+
+          title:
+            'Cuando una comida se aleja de lo pautado, ¿qué suele pasar después?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'vuelvo',
+              label:
+                'Vuelvo a la pauta en la siguiente comida'
+            },
+            {
+              value: 'continua',
+              label:
+                'El desorden suele continuar durante el resto del día'
+            }
+          ]
+        }
+      ]
+    },
+
+
+    {
+      block:
+        '4 · Qué lo dificulta',
+
+      questions: [
+
+        {
+          key: 'solucionPauta',
+
+          title:
+            '¿Sentís que podrías solucionar tu principal dificultad manteniendo la pauta actual?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'depende_de_mi',
+              label:
+                'Sí, depende principalmente de que yo lo haga'
+            },
+            {
+              value: 'necesito_estrategia',
+              label:
+                'Probablemente sí, pero necesito alguna estrategia/organización'
+            },
+            {
+              value: 'no_encaja',
+              label:
+                'Me cuesta porque la pauta no encaja bien con mi realidad'
+            },
+            {
+              value: 'no_seguro',
+              label:
+                'No estoy seguro/a de qué necesitaría cambiar'
+            }
+          ]
+        }
+      ]
+    },
+
+
+    // ========================================================
+    // BLOQUE 5
+    // ========================================================
+
+    {
+      block:
+        '5 · Cómo usás Dieta',
+
+      questions: [
+
+        {
+          key: 'resolverComida',
+
+          title:
+            'Cuando necesitás saber qué comer o cómo armar una comida, ¿qué hacés normalmente?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'entro_dieta',
+              label:
+                'Entro a Dieta en la app'
+            },
+            {
+              value: 'recuerdo_pauta',
+              label:
+                'Ya recuerdo mi pauta y no necesito entrar'
+            },
+            {
+              value: 'recuerdo_y_consulto',
+              label:
+                'Uso lo que recuerdo y entro solo si tengo alguna duda'
+            },
+            {
+              value: 'pregunto_tirso',
+              label:
+                'Le pregunto a Tirso'
+            },
+            {
+              value: 'resuelvo_solo',
+              label:
+                'Lo resuelvo por mi cuenta sin consultar la pauta'
+            }
+          ]
+        },
+
+        {
+          key: 'usoDieta',
+
+          title:
+            'Cuando entrás a Dieta, ¿qué parte usás más?',
+
+          hint:
+            'Podés marcar más de una.',
+
+          type: 'multi',
+
+          options: [
+            {
+              value: 'plato',
+              label:
+                'El plato/estructura del día'
+            },
+            {
+              value: 'elegir_alimentos',
+              label:
+                '“Elegí tus alimentos”'
+            },
+            {
+              value: 'armar_comida',
+              label:
+                '“Armá tu comida”'
+            },
+            {
+              value: 'ejemplos',
+              label:
+                'Los ejemplos de comidas'
+            },
+            {
+              value: 'cantidades',
+              label:
+                'Las cantidades/porciones'
+            },
+            {
+              value: 'sin_parte',
+              label:
+                'Entro, pero no hay una parte específica que use más',
+              exclusive: true
+            },
+            {
+              value: 'casi_nunca',
+              label:
+                'Casi nunca entro a Dieta',
+              exclusive: true
+            }
+          ]
+        },
+
+        {
+          key: 'reemplazos',
+
+          title:
+            'Cuando querés cambiar un alimento, ¿dónde buscás otra opción?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'dieta',
+              label:
+                'Busco otras opciones dentro de Dieta'
+            },
+            {
+              value: 'ya_se',
+              label:
+                'Ya sé por qué alimentos puedo reemplazarlo'
+            },
+            {
+              value: 'pregunto_tirso',
+              label:
+                'Le pregunto a Tirso'
+            },
+            {
+              value: 'elijo_parecido',
+              label:
+                'Elijo por mi cuenta algo que considero parecido'
+            },
+            {
+              value: 'no_se_donde',
+              label:
+                'No sé bien dónde buscar reemplazos'
+            },
+            {
+              value: 'nunca',
+              label:
+                'Nunca necesité hacerlo'
+            }
+          ]
+        }
+      ]
+    },
+
+
+    // ========================================================
+    // BLOQUE 6
+    // ========================================================
+
+    {
+      block:
+        '6 · Cómo reportás',
+
+      questions: [
+
+        {
+          key: 'baseReporte',
+
+          title:
+            'Cuando completás la parte de nutrición de Mi Semana, ¿en qué te basás para responder?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'repaso_7_dias',
+              label:
+                'Repaso cómo comí realmente durante los últimos 7 días'
+            },
+            {
+              value: 'idea_general',
+              label:
+                'Tengo una idea general de cómo fue mi semana y respondo según eso'
+            },
+            {
+              value: 'dias_recuerdo',
+              label:
+                'Me baso principalmente en los días que recuerdo'
+            },
+            {
+              value: 'no_reporto_significado',
+              label:
+                'No reporto porque no sé qué significa'
+            }
+          ]
+        },
+
+        {
+          key: 'significadoReporte',
+
+          title: function() {
+
+            if (
+              state.nutriConfirmado ===
+              'adecuado'
+            ) {
+              return 'Cuando reportás tus días de estructura, ¿qué estás contando?';
+            }
+
+            return 'Cuando indicás que cumpliste, por ejemplo, 5 de 7 días, ¿qué significa para vos?';
+          },
+
+          type: 'single',
+
+          options: function() {
+
+            if (
+              state.nutriConfirmado ===
+              'deficitario'
+            ) {
+              return [
+                {
+                  value:
+                    'estructura_4_comidas',
+                  label:
+                    'Que durante 5 días mis 4 comidas tuvieron la estructura pautada'
+                },
+                {
+                  value:
+                    'saludable',
+                  label:
+                    'Que durante 5 días comí bastante saludable'
+                },
+                {
+                  value:
+                    'evite_malas',
+                  label:
+                    'Que durante 5 días evité comidas que considero malas'
+                },
+                {
+                  value:
+                    'comi_bien',
+                  label:
+                    'Que aproximadamente 5 días comí “bien”'
+                },
+                {
+                  value:
+                    'no_seguro',
+                  label:
+                    'No estoy completamente seguro/a de qué debería contar'
+                }
+              ];
+            }
+
+            if (
+              state.nutriConfirmado ===
+              'adecuado'
+            ) {
+              return [
+                {
+                  value:
+                    'estructura_completa',
+                  label:
+                    'Días en que mantuve las comidas completas'
+                },
+                {
+                  value:
+                    'estructura_y_cantidad',
+                  label:
+                    'Días en que además respeté las cantidades'
+                },
+                {
+                  value:
+                    'comi_bien',
+                  label:
+                    'Días en que simplemente considero que comí bien'
+                },
+                {
+                  value:
+                    'aproximado',
+                  label:
+                    'Lo respondo aproximadamente'
+                },
+                {
+                  value:
+                    'no_seguro',
+                  label:
+                    'No estoy seguro/a'
+                }
+              ];
+            }
+
+            return [
+              {
+                value:
+                  'cantidades_pautadas',
+                label:
+                  'Días en que aproximadamente cubrí las cantidades pautadas'
+              },
+              {
+                value:
+                  'saludable',
+                label:
+                  'Días en que elegí alimentos saludables'
+              },
+              {
+                value:
+                  'cuatro_comidas',
+                label:
+                  'Días en que hice las 4 comidas'
+              },
+              {
+                value:
+                  'comi_bien',
+                label:
+                  'Días en que considero que comí bien'
+              },
+              {
+                value:
+                  'no_seguro',
+                label:
+                  'No estoy seguro/a'
+              }
+            ];
+          }
+        }
+      ]
+    },
+
+
+    {
+      block:
+        '6 · Cómo reportás',
+
+      questions: [
+
+        {
+          key: 'precisionMiSemana',
+
+          title:
+            '¿Las opciones actuales de Mi Semana te permiten contar con precisión cómo fue realmente tu alimentación?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'representa_bien',
+              label:
+                'Sí, representan bien lo que pasó'
+            },
+            {
+              value: 'aproximo_a_veces',
+              label:
+                'En general sí, aunque a veces tengo que aproximar'
+            },
+            {
+              value: 'faltan_cosas',
+              label:
+                'Hay cosas importantes que no puedo reflejar'
+            },
+            {
+              value: 'no_se_elegir',
+              label:
+                'Muchas veces no sé qué opción elegir'
+            }
+          ]
+        },
+
+        {
+          key: 'problemaMiSemana',
+
+          title:
+            '¿Qué te cuesta reflejar?',
+
+          type: 'text',
+
+          visible: function() {
+            return [
+              'faltan_cosas',
+              'no_se_elegir'
+            ].includes(
+              state.answers.precisionMiSemana
+            );
+          },
+
+          required: function() {
+            return [
+              'faltan_cosas',
+              'no_se_elegir'
+            ].includes(
+              state.answers.precisionMiSemana
+            );
+          }
+        },
+
+        {
+          key: 'reporteMalaSemana',
+
+          title:
+            'Cuando una semana no cumpliste bien, ¿qué hacés al completar Mi Semana?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'reporto_real',
+              label:
+                'Reporto lo que pasó aunque haya sido una mala semana'
+            },
+            {
+              value: 'redondeo_arriba',
+              label:
+                'A veces termino redondeando mi cumplimiento hacia arriba'
+            },
+            {
+              value: 'dudo_numero',
+              label:
+                'Me cuesta decidir qué número representa realmente la semana'
+            },
+            {
+              value: 'no_completo',
+              label:
+                'A veces directamente no completo esa parte'
+            }
+          ]
+        }
+      ]
+    },
+
+
+    // ========================================================
+    // BLOQUE 7
+    // ========================================================
+
+    {
+      block:
+        '7 · Qué necesitás',
+
+      questions: [
+
+        {
+          key: 'necesidadFuerzaT',
+
+          title:
+            '¿Qué sentís que necesitarías principalmente de Fuerza T para mejorar tu alimentación?',
+
+          type: 'single',
+
+          options: [
+            {
+              value: 'explicacion',
+              label:
+                'Que me expliquen mejor qué tengo que hacer'
+            },
+            {
+              value: 'pautas_concretas',
+              label:
+                'Tener pautas más concretas'
+            },
+            {
+              value: 'mas_opciones',
+              label:
+                'Tener más opciones/ejemplos para resolver comidas'
+            },
+            {
+              value: 'cantidades_faciles',
+              label:
+                'Que las cantidades sean más fáciles de entender'
+            },
+            {
+              value: 'adaptar_rutina',
+              label:
+                'Ayuda para adaptar la pauta a mi rutina'
+            },
+            {
+              value: 'mejor_reporte',
+              label:
+                'Una mejor forma de registrar/reportar lo que hago'
+            },
+            {
+              value: 'cumplir_mejor',
+              label:
+                'No necesito cambiar la pauta; necesito cumplirla mejor'
+            },
+            {
+              value: 'otra',
+              label:
+                'Otra cosa'
+            }
+          ]
+        },
+
+        {
+          key: 'cambioSugerido',
+
+          title:
+            'Si pudieras cambiar una sola cosa de cómo trabajamos la nutrición en Fuerza T, ¿qué cambiarías?',
+
+          type: 'text',
+
+          required: true
+        }
+      ]
+    }
+  ];
+
+
+  // ==========================================================
+  // LOGIN
+  // ==========================================================
+
+  function renderLogin() {
+
+    state.screen = 'login';
+
+    setProgress(0);
+
+    setBlock(
+      'Auditoría nutricional'
+    );
+
+
+    document.getElementById('root').innerHTML = `
+      <div class="card">
+
+        <h1 class="title">
+          Auditoría Nutricional
+        </h1>
+
+        <p class="subtitle">
+          Este finde quiero entender cómo estás usando realmente la nutrición de Fuerza T.
+        </p>
+
+        <div class="highlight">
+          No hay respuestas correctas. Si algo no entendés, no hacés o directamente no usás, marcarlo así me sirve más que responder lo que pensás que deberías hacer.
+          <br><br>
+          Con tus respuestas voy a revisar tus pautas y también mejorar cómo trabajamos la nutrición de acá a fin de año.
+        </div>
+
+        <div class="identity">
+
+          <label for="nameInput">
+            Ingresá tu nombre como lo hacés en la app
+          </label>
+
+          <input
+            id="nameInput"
+            class="text-input"
+            type="text"
+            autocomplete="name"
+            placeholder="Tu nombre"
+          />
+
+        </div>
+
+        <div
+          id="loginError"
+          class="error hidden"
+        ></div>
+
+        <div class="nav">
+          <button
+            class="btn btn-primary"
+            id="loginButton"
+            onclick="login()"
+          >
+            Continuar
+          </button>
+        </div>
+
+      </div>
+    `;
+
+
+    const input =
+      document.getElementById(
+        'nameInput'
+      );
+
+
+    input.addEventListener(
+      'keydown',
+      function(e) {
+        if (e.key === 'Enter') {
+          login();
+        }
+      }
+    );
+
+
+    setTimeout(
+      () => input.focus(),
+      100
+    );
+  }
+
+
+  async function login() {
+
+    const input =
+      document.getElementById(
+        'nameInput'
+      );
+
+    const button =
+      document.getElementById(
+        'loginButton'
+      );
+
+    const error =
+      document.getElementById(
+        'loginError'
+      );
+
+
+    const entered =
+      String(
+        input.value || ''
+      ).trim();
+
+
+    error.classList.add(
+      'hidden'
+    );
+
+
+    if (!entered) {
+      showLoginError(
+        'Ingresá tu nombre para continuar.'
+      );
+
+      return;
+    }
+
+
+    button.disabled = true;
+    button.textContent =
+      'Buscando...';
+
+
+    try {
+
+      if (
+        !state.asesorados.length
+      ) {
+        const [asesorados, diagnosticos] =
+          await Promise.all([
+
+            getJSON(
+              SCRIPT_URL +
+              '?action=asesorados'
+            ),
+
+            getJSON(
+              SCRIPT_URL +
+              '?action=diagnosticos'
+            )
+
+          ]);
+
+
+        state.asesorados =
+          Array.isArray(asesorados)
+            ? asesorados
+            : [];
+
+
+        state.diagnosticos =
+          Array.isArray(diagnosticos)
+            ? diagnosticos
+            : [];
+      }
+
+
+      const persona =
+        state.asesorados.find(
+          a =>
+            norm(a.Asesorado) ===
+            norm(entered)
+        );
+
+
+      if (!persona) {
+        throw new Error(
+          'No encontré ese nombre. Escribilo igual que en tu app de Fuerza T.'
+        );
+      }
+
+
+      const asesoradoId =
+        String(
+          persona.AsesoradoID || ''
+        ).trim();
+
+
+      if (!asesoradoId) {
+        throw new Error(
+          'Tu ficha no tiene AsesoradoID configurado. Avisale a Tirso.'
+        );
+      }
+
+
+      const diagnostico =
+        state.diagnosticos.find(
+          d =>
+            norm(d.AsesoradoID) ===
+            norm(asesoradoId)
+        ) ||
+        state.diagnosticos.find(
+          d =>
+            norm(d.Asesorado) ===
+            norm(persona.Asesorado)
+        );
+
+
+      const nutri =
+        norm(
+          diagnostico
+            ? diagnostico.NutriConfirmado
+            : ''
+        );
+
+
+      if (
+        ![
+          'deficitario',
+          'adecuado',
+          'deportivo'
+        ].includes(nutri)
+      ) {
+        throw new Error(
+          'Tu configuración nutricional todavía no está completa. Avisale a Tirso.'
+        );
+      }
+
+
+      const estado =
+        await getJSON(
+          SCRIPT_URL +
+          '?action=auditorianutriestado' +
+          '&asesoradoId=' +
+          encodeURIComponent(
+            asesoradoId
+          )
+        );
+
+
+      state.asesorado =
+        String(
+          persona.Asesorado
+        ).trim();
+
+      state.asesoradoId =
+        asesoradoId;
+
+      state.nutriConfirmado =
+        nutri;
+
+
+      if (
+        estado &&
+        estado.completada
+      ) {
+        renderAlreadyCompleted();
+        return;
+      }
+
+
+      renderWelcome();
+
+
+    } catch (err) {
+
+      showLoginError(
+        err.message ||
+        'No se pudo ingresar.'
+      );
+
+      button.disabled = false;
+      button.textContent =
+        'Continuar';
+    }
+  }
+
+
+  function showLoginError(message) {
+
+    const error =
+      document.getElementById(
+        'loginError'
+      );
+
+    error.textContent =
+      message;
+
+    error.classList.remove(
+      'hidden'
+    );
+  }
+
+
+  // ==========================================================
+  // BIENVENIDA
+  // ==========================================================
+
+  function renderWelcome() {
+
+    state.screen =
+      'welcome';
+
+    setProgress(3);
+
+    setBlock(
+      'Antes de empezar'
+    );
+
+
+    document.getElementById('root').innerHTML = `
+      <div class="card">
+
+        <span class="question-number">
+          Hola, ${escapeHtml(state.asesorado)}
+        </span>
+
+        <h1 class="title">
+          Necesito que respondas según lo que realmente hacés.
+        </h1>
+
+        <p class="subtitle">
+          No estoy evaluando si comés “bien” o “mal”. Quiero saber qué partes del sistema están funcionando y cuáles necesitamos trabajar mejor.
+        </p>
+
+        <div class="intro-list">
+
+          <div class="intro-item">
+            Pensá en situaciones reales, no en lo que idealmente deberías hacer.
+          </div>
+
+          <div class="intro-item">
+            Si no entendés algo, marcarlo es información útil.
+          </div>
+
+          <div class="intro-item">
+            Te va a llevar aproximadamente 6–8 minutos.
+          </div>
+
+          <div class="intro-item">
+            Si cerrás esta página antes de terminar, las respuestas no se guardan.
+          </div>
+
+        </div>
+
+        <div class="nav">
+
+          <button
+            class="btn btn-secondary"
+            onclick="renderLogin()"
+          >
+            Volver
+          </button>
+
+          <button
+            class="btn btn-primary"
+            onclick="startAudit()"
+          >
+            Empezar
+          </button>
+
+        </div>
+
+      </div>
+    `;
+  }
+
+
+  function startAudit() {
+
+    state.currentStep = 0;
+    state.answers = {};
+
+    renderStep();
+  }
+
+
+  // ==========================================================
+  // RENDER PREGUNTAS
+  // ==========================================================
+
+  function visibleQuestion(q) {
+
+    if (
+      typeof q.visible ===
+      'function'
+    ) {
+      return !!q.visible();
+    }
+
+    if (
+      q.visible === false
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+
+  function requiredQuestion(q) {
+
+    if (
+      typeof q.required ===
+      'function'
+    ) {
+      return !!q.required();
+    }
+
+    return (
+      q.required !== false
+    );
+  }
+
+
+  function resolveValue(value) {
+
+    return (
+      typeof value ===
+      'function'
+    )
+      ? value()
+      : value;
+  }
+
+
+  function renderStep() {
+
+    state.screen =
+      'audit';
+
+
+    const step =
+      steps[state.currentStep];
+
+
+    const percent =
+      5 +
+      Math.round(
+        (
+          state.currentStep /
+          steps.length
+        ) * 90
+      );
+
+
+    setProgress(percent);
+    setBlock(step.block);
+
+
+    let html = `
+      <div class="card">
+    `;
+
+
+    if (step.intro) {
+      html += `
+        <div
+          class="highlight"
+          style="margin-top:0;margin-bottom:22px"
+        >
+          ${escapeHtml(step.intro)}
+        </div>
+      `;
+    }
+
+
+    step.questions.forEach(
+      function(q, index) {
+
+        if (!visibleQuestion(q)) {
+          return;
+        }
+
+        html +=
+          renderQuestion(
+            q,
+            index
+          );
+      }
+    );
+
+
+    html += `
+        <div
+          id="stepError"
+          class="error hidden"
+        ></div>
+
+        <div class="nav">
+
+          <button
+            class="btn btn-secondary"
+            onclick="previousStep()"
+          >
+            Volver
+          </button>
+
+          <button
+            class="btn btn-primary"
+            onclick="nextStep()"
+          >
+            ${
+              state.currentStep ===
+              steps.length - 1
+                ? 'Revisar y enviar'
+                : 'Continuar'
+            }
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+
+    document.getElementById(
+      'root'
+    ).innerHTML =
+      html;
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant'
+    });
+  }
+
+
+  function renderQuestion(
+    q,
+    index
+  ) {
+
+    const title =
+      resolveValue(q.title);
+
+    const hint =
+      resolveValue(q.hint);
+
+    const value =
+      state.answers[q.key];
+
+
+    let html = `
+      <section
+        class="question"
+        data-question="${escapeHtml(q.key)}"
+      >
+
+        <span class="question-number">
+          Pregunta
+        </span>
+
+        <h2 class="question-title">
+          ${escapeHtml(title)}
+        </h2>
+    `;
+
+
+    if (hint) {
+      html += `
+        <div class="hint">
+          ${escapeHtml(hint)}
+        </div>
+      `;
+    }
+
+
+    if (
+      q.type ===
+      'single'
+    ) {
+
+      const options =
+        resolveValue(q.options) || [];
+
+
+      html +=
+        `<div class="options">`;
+
+
+      options.forEach(
+        function(opt) {
+
+          const selected =
+            value === opt.value;
+
+
+          html += `
+            <label
+              class="option ${
+                selected
+                  ? 'selected'
+                  : ''
+              }"
+            >
+
+              <input
+                type="radio"
+                name="${escapeHtml(q.key)}"
+                value="${escapeHtml(opt.value)}"
+                ${
+                  selected
+                    ? 'checked'
+                    : ''
+                }
+                onchange="setSingle('${escapeHtml(q.key)}','${escapeHtml(opt.value)}')"
+              />
+
+              <span class="option-text">
+                ${escapeHtml(opt.label)}
+              </span>
+
+            </label>
+          `;
+        }
+      );
+
+
+      html +=
+        `</div>`;
+    }
+
+
+    if (
+      q.type ===
+      'multi'
+    ) {
+
+      const options =
+        resolveValue(q.options) || [];
+
+      const selected =
+        Array.isArray(value)
+          ? value
+          : [];
+
+
+      html +=
+        `<div class="options">`;
+
+
+      options.forEach(
+        function(opt) {
+
+          const checked =
+            selected.includes(
+              opt.value
+            );
+
+
+          html += `
+            <label
+              class="option ${
+                checked
+                  ? 'selected'
+                  : ''
+              }"
+            >
+
+              <input
+                type="checkbox"
+                ${
+                  checked
+                    ? 'checked'
+                    : ''
+                }
+                onchange="toggleMulti(
+                  '${escapeHtml(q.key)}',
+                  '${escapeHtml(opt.value)}',
+                  ${q.max || 0},
+                  ${opt.exclusive ? 'true' : 'false'}
+                )"
+              />
+
+              <span class="option-text">
+                ${escapeHtml(opt.label)}
+              </span>
+
+            </label>
+          `;
+        }
+      );
+
+
+      html +=
+        `</div>`;
+    }
+
+
+    if (
+      q.type ===
+      'days'
+    ) {
+
+      html +=
+        `<div class="days">`;
+
+
+      for (
+        let i = 0;
+        i <= 7;
+        i++
+      ) {
+
+        const selected =
+          Number(value) === i &&
+          value !== undefined;
+
+
+        html += `
+          <button
+            type="button"
+            class="day-btn ${
+              selected
+                ? 'selected'
+                : ''
+            }"
+            onclick="setDays('${escapeHtml(q.key)}', ${i})"
+          >
+            ${i}
+          </button>
+        `;
+      }
+
+
+      html +=
+        `</div>`;
+    }
+
+
+    if (
+      q.type ===
+      'text'
+    ) {
+
+      html += `
+        <textarea
+          id="text_${escapeHtml(q.key)}"
+          placeholder="Escribí tu respuesta..."
+          oninput="setText('${escapeHtml(q.key)}', this.value)"
+        >${escapeHtml(value || '')}</textarea>
+      `;
+    }
+
+
+    html +=
+      `</section>`;
+
+
+    return html;
+  }
+
+
+  // ==========================================================
+  // RESPUESTAS
+  // ==========================================================
+
+  function setSingle(
+    key,
+    value
+  ) {
+
+    state.answers[key] =
+      value;
+
+    renderStep();
+  }
+
+
+  function setDays(
+    key,
+    value
+  ) {
+
+    state.answers[key] =
+      value;
+
+    renderStep();
+  }
+
+
+  function setText(
+    key,
+    value
+  ) {
+
+    state.answers[key] =
+      value;
+  }
+
+
+  function toggleMulti(
+    key,
+    value,
+    max,
+    exclusive
+  ) {
+
+    let arr =
+      Array.isArray(
+        state.answers[key]
+      )
+        ? [
+            ...state.answers[key]
+          ]
+        : [];
+
+
+    const step =
+      steps[state.currentStep];
+
+    const q =
+      step.questions.find(
+        x => x.key === key
+      );
+
+
+    const options =
+      resolveValue(q.options) || [];
+
+
+    if (exclusive) {
+
+      if (
+        arr.includes(value)
+      ) {
+        arr = [];
+
+      } else {
+        arr = [value];
+      }
+
+    } else {
+
+      const exclusiveValues =
+        options
+          .filter(
+            o => o.exclusive
+          )
+          .map(
+            o => o.value
+          );
+
+
+      arr =
+        arr.filter(
+          x =>
+            !exclusiveValues.includes(x)
+        );
+
+
+      if (
+        arr.includes(value)
+      ) {
+
+        arr =
+          arr.filter(
+            x => x !== value
+          );
+
+      } else {
+
+        if (
+          max &&
+          arr.length >= max
+        ) {
+          showStepError(
+            `Podés elegir hasta ${max} opciones.`
+          );
+
+          return;
+        }
+
+        arr.push(value);
+      }
+    }
+
+
+    state.answers[key] =
+      arr;
+
+    renderStep();
+  }
+
+
+  // ==========================================================
+  // VALIDACIÓN
+  // ==========================================================
+
+  function validateStep() {
+
+    const step =
+      steps[state.currentStep];
+
+
+    for (
+      const q of
+      step.questions
+    ) {
+
+      if (!visibleQuestion(q)) {
+        continue;
+      }
+
+      if (!requiredQuestion(q)) {
+        continue;
+      }
+
+
+      const value =
+        state.answers[q.key];
+
+
+      if (
+        q.type === 'multi'
+      ) {
+
+        if (
+          !Array.isArray(value) ||
+          value.length === 0
+        ) {
+          return false;
+        }
+
+      } else if (
+        q.type === 'days'
+      ) {
+
+        if (
+          value === undefined ||
+          value === null ||
+          value === ''
+        ) {
+          return false;
+        }
+
+      } else {
+
+        if (
+          !String(
+            value || ''
+          ).trim()
+        ) {
+          return false;
+        }
+      }
+    }
+
+
+    return true;
+  }
+
+
+  function showStepError(
+    message
+  ) {
+
+    const el =
+      document.getElementById(
+        'stepError'
+      );
+
+
+    if (!el) {
+      alert(message);
+      return;
+    }
+
+
+    el.textContent =
+      message;
+
+    el.classList.remove(
+      'hidden'
+    );
+  }
+
+
+  // ==========================================================
+  // NAVEGACIÓN
+  // ==========================================================
+
+  function nextStep() {
+
+    if (!validateStep()) {
+
+      showStepError(
+        'Respondé las preguntas de esta pantalla para continuar.'
+      );
+
+      return;
+    }
+
+
+    if (
+      state.currentStep <
+      steps.length - 1
+    ) {
+
+      state.currentStep++;
+
+      renderStep();
+
+      return;
+    }
+
+
+    renderReview();
+  }
+
+
+  function previousStep() {
+
+    if (
+      state.currentStep === 0
+    ) {
+      renderWelcome();
+      return;
+    }
+
+
+    state.currentStep--;
+
+    renderStep();
+  }
+
+
+  // ==========================================================
+  // REVISIÓN
+  // ==========================================================
+
+  function renderReview() {
+
+    state.screen =
+      'review';
+
+    setProgress(96);
+
+    setBlock(
+      'Revisar'
+    );
+
+
+    document.getElementById(
+      'root'
+    ).innerHTML = `
+      <div class="card">
+
+        <span class="question-number">
+          Último paso
+        </span>
+
+        <h1 class="title">
+          ¿Listo para enviar?
+        </h1>
+
+        <p class="subtitle">
+          Revisá mentalmente que hayas respondido según lo que realmente hacés. Una vez enviada, esta auditoría queda cerrada.
+        </p>
+
+        <div class="highlight">
+          No se trata de obtener un resultado “bueno”. La utilidad está en que la información represente tu situación real.
+        </div>
+
+        <div class="nav">
+
+          <button
+            class="btn btn-secondary"
+            onclick="backFromReview()"
+          >
+            Volver
+          </button>
+
+          <button
+            class="btn btn-primary"
+            id="submitButton"
+            onclick="submitAudit()"
+          >
+            Enviar auditoría
+          </button>
+
+        </div>
+
+        <div
+          id="submitError"
+          class="error hidden"
+        ></div>
+
+      </div>
+    `;
+  }
+
+
+  function backFromReview() {
+
+    state.currentStep =
+      steps.length - 1;
+
+    renderStep();
+  }
+
+
+  // ==========================================================
+  // ENVÍO
+  // ==========================================================
+
+  async function submitAudit() {
+
+    const button =
+      document.getElementById(
+        'submitButton'
+      );
+
+    const error =
+      document.getElementById(
+        'submitError'
+      );
+
+
+    button.disabled = true;
+
+    button.textContent =
+      'Enviando...';
+
+    error.classList.add(
+      'hidden'
+    );
+
+
+    try {
+
+      const result =
+        await postJSON({
+
+          action:
+            'auditoriaNutri',
+
+          asesorado:
+            state.asesorado,
+
+          asesoradoId:
+            state.asesoradoId,
+
+          nutriConfirmado:
+            state.nutriConfirmado,
+
+          respuestas:
+            state.answers
+        });
+
+
+      if (
+        result &&
+        result.completada
+      ) {
+        renderAlreadyCompleted();
+        return;
+      }
+
+
+      if (
+        !result ||
+        result.ok !== true
+      ) {
+        throw new Error(
+          result &&
+          result.error
+            ? result.error
+            : 'No se pudo guardar la auditoría.'
+        );
+      }
+
+
+      renderFinished();
+
+
+    } catch (err) {
+
+      error.textContent =
+        err.message ||
+        'No se pudo enviar. Probá nuevamente.';
+
+      error.classList.remove(
+        'hidden'
+      );
+
+      button.disabled = false;
+
+      button.textContent =
+        'Enviar auditoría';
+    }
+  }
+
+
+  // ==========================================================
+  // FINAL
+  // ==========================================================
+
+  function renderFinished() {
+
+    state.screen =
+      'finished';
+
+    setProgress(100);
+
+    setBlock(
+      'Completada'
+    );
+
+
+    document.getElementById(
+      'root'
+    ).innerHTML = `
+      <div class="card">
+
+        <div class="success">
+          Auditoría completada ✓
+        </div>
+
+        <h1
+          class="title"
+          style="margin-top:20px"
+        >
+          Gracias, ${escapeHtml(state.asesorado)}.
+        </h1>
+
+        <p class="subtitle">
+          Esto no fue un examen ni un reporte semanal.
+          <br><br>
+          Tus respuestas me permiten entender mejor qué estás haciendo, qué partes de la pauta tenés claras y dónde puede estar el principal obstáculo.
+        </p>
+
+        <div class="final-pair">
+
+          <div>
+            <strong>Tu parte:</strong><br>
+            responder según lo que realmente hacés.
+          </div>
+
+          <div>
+            <strong>Mi parte:</strong><br>
+            usar esta información para decidir qué mantener, qué ajustar y qué necesitamos trabajar mejor de acá en adelante.
+          </div>
+
+        </div>
+
+      </div>
+    `;
+  }
+
+
+  function renderAlreadyCompleted() {
+
+    state.screen =
+      'completed';
+
+    setProgress(100);
+
+    setBlock(
+      'Completada'
+    );
+
+
+    document.getElementById(
+      'root'
+    ).innerHTML = `
+      <div class="card">
+
+        <div class="success">
+          Auditoría completada ✓
+        </div>
+
+        <h1
+          class="title"
+          style="margin-top:20px"
+        >
+          Ya recibí tu auditoría nutricional.
+        </h1>
+
+        <p class="subtitle">
+          No necesitás volver a completarla. Voy a usar esas respuestas junto con tus datos de Fuerza T para revisar cómo seguir trabajando tu nutrición.
+        </p>
+
+      </div>
+    `;
+  }
+
+
+  // ==========================================================
+  // INICIO
+  // ==========================================================
+
+  renderLogin();
+
+</script>
+
+</body>
+</html>
